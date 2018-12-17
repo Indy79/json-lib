@@ -1,10 +1,9 @@
 package org.reactivecouchbase.json;
 
-import org.joda.time.DateTime;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,38 +19,21 @@ public class Syntax {
     }
 
     public static JsPair $(String name, Date value) {
-        if (value == null) {
-            return nul(name);
-        }
-        return new JsPair(name, new DateTime(value).toString());
-    }
-
-    public static JsPair $(String name, DateTime value) {
-        if (value == null) {
-            return nul(name);
-        }
-        return new JsPair(name, value.toString());
+        return $(name, value, DateTimeFormatter.ISO_DATE_TIME);
     }
 
     public static JsPair $(String name, Date value, String format) {
-        if (value == null) {
-            return nul(name);
-        }
-        return new JsPair(name, new DateTime(value).toString(format));
+        return $(name, value, DateTimeFormatter.ofPattern(format));
     }
 
-    public static JsPair $(String name, DateTime value, String format) {
+    public static JsPair $(String name, Date value, DateTimeFormatter format) {
         if (value == null) {
             return nul(name);
         }
-        return new JsPair(name, value.toString(format));
-    }
-
-    public static JsPair $(String name, DateTime value, org.joda.time.format.DateTimeFormatter format) {
-        if (value == null) {
-            return nul(name);
-        }
-        return new JsPair(name, value.toString(format));
+        LocalDateTime date = value.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        return new JsPair(name, format.format(date));
     }
 
     public static JsPair $(String name, java.time.LocalDate value, String format) {

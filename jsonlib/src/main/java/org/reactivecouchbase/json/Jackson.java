@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.node.BigIntegerNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import org.reactivecouchbase.common.Throwables;
 
 import java.io.IOException;
 import java.io.StringWriter;

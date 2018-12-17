@@ -1,6 +1,6 @@
 package org.reactivecouchbase.json;
 
-import org.reactivecouchbase.functional.Option;
+import io.vavr.control.Option;
 
 public class JsUndefined extends JsValue {
 

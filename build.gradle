@@ -1,0 +1,61 @@
+plugins {
+    id 'java-library'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['jsonlib/src/main/java']
+        }
+        resources {
+            srcDirs = ['jsonlib/src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['jsonlib/src/test/java']
+        }
+        resources {
+            srcDirs = ['jsonlib/src/test/resources']
+        }
+    }
+}
+
+javadoc {
+    failOnError = false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    baseName = "${groupId}-${moduleId}"
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+build.dependsOn(javadocJar)
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+build.dependsOn(sourcesJar)
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    api 'com.fasterxml.jackson.core:jackson-core:2.9.7'
+    api 'com.fasterxml.jackson.core:jackson-annotations:2.9.7'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+    api 'io.vavr:vavr:0.9.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.3.2'
+}

@@ -1,9 +1,9 @@
 package org.reactivecouchbase.json.mapping;
 
-import org.reactivecouchbase.common.Throwables;
-import org.reactivecouchbase.functional.Option;
+import io.vavr.control.Option;
 import org.reactivecouchbase.json.JsArray;
 import org.reactivecouchbase.json.Json;
+import org.reactivecouchbase.json.Throwables;
 
 import java.util.ArrayList;
 import java.util.Collections;

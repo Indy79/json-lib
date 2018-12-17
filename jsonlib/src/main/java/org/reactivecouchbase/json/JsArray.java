@@ -1,6 +1,5 @@
 package org.reactivecouchbase.json;
 
-import org.reactivecouchbase.common.Throwables;
 import org.reactivecouchbase.json.mapping.JsResult;
 import org.reactivecouchbase.json.mapping.Reader;
 

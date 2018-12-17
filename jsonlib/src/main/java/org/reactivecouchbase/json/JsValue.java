@@ -1,14 +1,7 @@
 package org.reactivecouchbase.json;
 
-import org.reactivecouchbase.functional.Option;
-import org.reactivecouchbase.json.mapping.DefaultReaders;
-import org.reactivecouchbase.json.mapping.Format;
-import org.reactivecouchbase.json.mapping.JsError;
-import org.reactivecouchbase.json.mapping.JsResult;
-import org.reactivecouchbase.json.mapping.Reader;
-import org.reactivecouchbase.validation.Rule;
-import org.reactivecouchbase.validation.Validation;
-import org.reactivecouchbase.validation.ValidationError;
+import io.vavr.control.Option;
+import org.reactivecouchbase.json.mapping.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -178,14 +171,6 @@ public abstract class JsValue implements Serializable {
         return reader.read(this);
     }
 
-    public <T> Validation<T, ValidationError> validate(Rule<JsValue, T> rule) {
-        return rule.validate(this);
-    }
-
-    public <T> Validation<T, ValidationError> read(Rule<JsValue, T> rule) {
-        return rule.validate(this);
-    }
-
     public <A extends JsValue> JsResult<A> transform(Reader<A> reader) {
         return reader.read(this);
     }
@@ -224,7 +209,7 @@ public abstract class JsValue implements Serializable {
         } catch (Exception e) {
             return Option.none();
         }
-        return Option.apply(currentValue);
+        return Option.of(currentValue);
     }
 
     public JsValue field(String field) {

@@ -1,7 +1,6 @@
 package org.reactivecouchbase.json.mapping;
 
-import org.joda.time.DateTime;
-import org.reactivecouchbase.functional.Option;
+import io.vavr.control.Option;
 import org.reactivecouchbase.json.*;
 
 import java.math.BigDecimal;
@@ -137,16 +136,6 @@ public class DefaultReaders {
         }
         return new JsError<>(new IllegalAccessError("Not a JsNumber"));
     };
-    public static final Reader<DateTime> DATETIME_READER = value -> {
-        if (value.is(JsString.class)) {
-            try {
-                return new JsSuccess<>(DateTime.parse(value.as(String.class)));
-            } catch (Exception e) {
-                return new JsError<>(e);
-            }
-        }
-        return new JsError<>(new IllegalAccessError("Not a JsString"));
-    };
     public static final Reader<LocalTime> LOCAL_TIME_READER = value -> {
         if (value.is(JsString.class)) {
             try {
@@ -195,7 +184,6 @@ public class DefaultReaders {
         put(BigDecimal.class, BIGDEC_READER);
         put(BigInteger.class, BIGINT_READER);
         put(JsValue.class, JSVALUE_READER);
-        put(DateTime.class, DATETIME_READER);
         put(LocalTime.class, LOCAL_TIME_READER);
         put(LocalDate.class, LOCAL_DATE_READER);
         put(LocalDateTime.class, LOCAL_DATE_TIME_READER);

@@ -1,6 +1,6 @@
 package org.reactivecouchbase.json.mapping;
 
-import org.reactivecouchbase.functional.Option;
+import io.vavr.control.Option;
 
 import java.util.ArrayList;
 import java.util.Collections;

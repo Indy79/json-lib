@@ -1,21 +1,14 @@
 package org.reactivecouchbase.json;
 
-import org.reactivecouchbase.common.Throwables;
-import org.reactivecouchbase.functional.Option;
-import org.reactivecouchbase.functional.Tuple;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.control.Option;
 import org.reactivecouchbase.json.mapping.JsResult;
 import org.reactivecouchbase.json.mapping.Reader;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -104,7 +97,7 @@ public class JsObject extends JsValue implements Iterable<Map.Entry<String, JsVa
     public JsObject update(String key, Function<JsValue, JsValue> value) {
         Option<JsValue> field = this.fieldAsOpt(key);
         for (JsValue val : field) {
-            return this.add(key, Option.apply(value.apply(val)));
+            return this.add(key, Option.of(value.apply(val)));
         }
         return this;
     }
@@ -120,7 +113,7 @@ public class JsObject extends JsValue implements Iterable<Map.Entry<String, JsVa
     public JsObject upsert(String key, Function<Option<JsValue>, JsValue> value) {
         Option<JsValue> field = this.fieldAsOpt(key);
         JsValue ret = value.apply(field);
-        return this.add(key, Option.apply(ret));
+        return this.add(key, Option.of(ret));
     }
     // update or insert at key only if returned option is Some
     public JsObject upsertOpt(String key, Function<Option<JsValue>, Option<JsValue>> value) {
@@ -243,10 +236,10 @@ public class JsObject extends JsValue implements Iterable<Map.Entry<String, JsVa
         return values.containsKey(field);
     }
 
-    public JsObject mapProperties(Function<Tuple<String, JsValue>, JsValue> block) {
+    public JsObject mapProperties(Function<Tuple2<String, JsValue>, JsValue> block) {
         Map<String, JsValue> resulting = new HashMap<>();
         for (Map.Entry<String, JsValue> entry : values.entrySet()) {
-            JsValue tuple = block.apply(new Tuple<>(entry.getKey(), entry.getValue()));
+            JsValue tuple = block.apply(Tuple.of(entry.getKey(), entry.getValue()));
             resulting.put(entry.getKey(), tuple);
         }
         return new JsObject(resulting);
@@ -313,7 +306,7 @@ public class JsObject extends JsValue implements Iterable<Map.Entry<String, JsVa
     }
 
     public <T extends JsValue> JsObject with(String key, Option<T> value) {
-        return add(key, value.as(JsValue.class));
+        return add(key, value.map(JsValue.class::cast));
     }
 
     public JsObject with(String key, Integer value) {
